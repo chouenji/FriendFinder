@@ -82,7 +82,3 @@ The Friend Finder application uses a database to store user information and matc
 ## Contributing
 
 Contributions to the Friend Finder project are welcome! If you have any ideas, bug fixes, or feature requests, please create a pull request. For major changes, please open an issue first to discuss your proposal.
-
-## License
-
-This project is licensed under the [MIT License with Non-Commercial Clause (NC-MIT License)](link-to-your-license-file). You are free to use, modify, and distribute the code for non-commercial purposes only, subject to the terms of the license.
