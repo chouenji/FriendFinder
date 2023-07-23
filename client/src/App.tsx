@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Cookies from 'js-cookie';
 import Matches from './pages/Matches';
 import Profile from './pages/Profile';
+import MyProfile from './pages/MyProfile';
 
 function App() {
   const token: string = Cookies.get('token') || '';
@@ -83,8 +84,11 @@ function App() {
               Logout
             </button>
             <h1>Hello {user.name}!</h1>
-            <Link to="/matches" className="ml-4">
+            <Link to="/matches" className="ml-4 mr-4">
               My Matches
+            </Link>
+            <Link to="/my_profile" className="mr-4 ml-4">
+              My Profile
             </Link>
           </div>
         )}
@@ -104,6 +108,9 @@ function App() {
         </Route>
         <Route path="/profile/:id">
           <Profile user={user} token={token} />
+        </Route>
+        <Route path="/my_profile">
+          <MyProfile user={user} token={token} />
         </Route>
         <Route>
           <div className="w-80 mx-auto">

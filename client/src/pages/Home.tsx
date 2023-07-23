@@ -90,6 +90,8 @@ function Home(props: { user: User; token: string }) {
                     <br />
                     <h3>{friendChoice.name}</h3>
                     <br />
+                    <h3>{friendChoice.description}</h3>
+                    <br />
                     <button
                       id={friendChoice.id?.toString()}
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-4 rounded"

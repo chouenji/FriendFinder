@@ -44,12 +44,15 @@ export async function register(req: Request, res: Response) {
       return res.status(400).json({ error: 'Email already exists' });
     }
 
+    const description = "Hello, let's chat!";
+
     const newUser = await prisma.user.create({
       data: {
         name,
         email,
         picture: picBase64,
         password: hashedPassword,
+        description: description,
       },
     });
 

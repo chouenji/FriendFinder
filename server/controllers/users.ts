@@ -35,6 +35,30 @@ export async function user(req: Request, res: Response) {
   }
 }
 
+export async function postUserDescription(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const { description } = req.body;
+
+    const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+
+    if (!user) {
+      console.error(user);
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: Number(id) },
+      data: { description },
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
 export async function postUserLikes(req: Request, res: Response) {
   try {
     const { userId, likedUserId } = req.body;
@@ -59,7 +83,7 @@ export async function postUserLikes(req: Request, res: Response) {
       where: {
         userId: Number(userId),
         likedId: Number(likedUserId),
-      } as any,
+      },
     });
 
     if (like) {
@@ -70,7 +94,7 @@ export async function postUserLikes(req: Request, res: Response) {
       data: {
         userId: Number(userId),
         likedId: Number(likedUserId),
-      } as any,
+      },
     });
 
     const checkMatch = await prisma.likeUser.findFirst({
