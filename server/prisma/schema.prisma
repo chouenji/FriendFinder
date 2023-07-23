@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String
+  picture    String?
+  password   String
+  description String?
+  likes     LikeUser[]
+  matches   Match[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map(name: "users")
+}
+
+model LikeUser {
+  id         Int      @id @default(autoincrement())
+  userId     Int    
+  likedId    Int
+  likes      User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map(name: "like_users")
+} 
+
+model Match {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  matchedId  Int
+  matches    User     @relation(fields: [matchedId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map(name: "matches")
+}
