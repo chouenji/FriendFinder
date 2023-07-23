@@ -22,7 +22,7 @@ jobs:
         run: npm install --prefix client
 
       - name: Install Jest
-        run: npm install --prefix client jest
+        run: npm install --prefix client jest node-fetch
 
       - name: Run client tests
-        run: npm test --prefix client
+        run: npm test --prefix client -- --env=node # Add --env=node flag here
