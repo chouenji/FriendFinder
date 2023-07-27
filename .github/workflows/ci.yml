@@ -2,31 +2,51 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   start_server:
     runs-on: ubuntu-latest
 
     steps:
-      # ... steps for starting the server ...
+      - uses: actions/checkout@v2
+      - name: Start server
+        run: |
+          cd server
+          npm install
+          npm run start
+
+  start_client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start client
+        run: |
+          cd client
+          npm install
+          npm run start
+
+  test_server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test server
+        run: |
+          cd server
+          npm install
+          npm run test
 
   test_client:
     runs-on: ubuntu-latest
 
     steps:
-      # ... steps for testing the client ...
-
-  push_to_repo:
-    needs: test_client
-    runs-on: ubuntu-latest
-
-    if: ${{ needs.test_client.result == 'success' }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Push changes
-        run: git commit -am "Automated commit" && git push
+      - uses: actions/checkout@v2
+      - name: Test client
+        run: |
+          cd client
+          npm install
+          npm run test
