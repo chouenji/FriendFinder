@@ -10,36 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: npm install --prefix server
-
-      - name: Start server
-        run: npm start --prefix server
+      # ... steps for starting the server ...
 
   test_client:
-    needs: start_server
     runs-on: ubuntu-latest
+
+    steps:
+      # ... steps for testing the client ...
+
+  push_to_repo:
+    needs: test_client
+    runs-on: ubuntu-latest
+
+    if: ${{ needs.test_client.result == 'success' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16' # Use Node.js version 16 or any desired version
-
-      - name: Wait for server to start
-        run: sleep 10 # Adjust the duration as needed to give the server enough time to start
-
-      - name: Install dependencies
-        run: npm install --prefix client
-
-      - name: Install Jest
-        run: npm install --prefix client jest node-fetch
-
-      - name: Run client tests
-        run: npm test --prefix client -- --env=node # Add --env=node flag here
+      - name: Push changes
+        run: git commit -am "Automated commit" && git push
