@@ -1,4 +1,4 @@
-name: Client CI
+name: CI
 
 on:
   push:
@@ -6,7 +6,21 @@ on:
       - main
 
 jobs:
-  test:
+  start_server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install --prefix server
+
+      - name: Start server
+        run: npm start --prefix server
+
+  test_client:
+    needs: start_server
     runs-on: ubuntu-latest
 
     steps:
@@ -17,6 +31,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16' # Use Node.js version 16 or any desired version
+
+      - name: Wait for server to start
+        run: sleep 10 # Adjust the duration as needed to give the server enough time to start
 
       - name: Install dependencies
         run: npm install --prefix client

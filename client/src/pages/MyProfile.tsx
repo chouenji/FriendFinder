@@ -42,9 +42,7 @@ function MyProfile(props: { user: User; token: string }) {
         }
       );
 
-      const data = await response.json();
-
-      console.log(data);
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
