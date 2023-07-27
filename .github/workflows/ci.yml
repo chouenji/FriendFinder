@@ -19,6 +19,7 @@ jobs:
           npm run start
 
   start_client:
+    needs: start_server
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +31,7 @@ jobs:
           npm run start
 
   test_server:
+    needs: start_server
     runs-on: ubuntu-latest
 
     steps:
@@ -41,6 +43,7 @@ jobs:
           npm run test
 
   test_client:
+    needs: start_client
     runs-on: ubuntu-latest
 
     steps:
