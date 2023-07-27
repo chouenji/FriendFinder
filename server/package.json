@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec  ts-node index.ts",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "start": "ts-nodeindex.ts"
   },
   "keywords": [],
   "author": "",
