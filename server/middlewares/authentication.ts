@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
 
 // Secret key for JWT signing and encryption
@@ -28,7 +28,11 @@ export function generateToken(userId: number, name: string): string {
 }
 
 // Verifying JWT token
-export function verifyToken(token: string): string | object {
-  const decodedToken = jwt.verify(token, secretKey);
-  return decodedToken;
+export function verifyToken(token: string): JwtPayload | null {
+  try {
+    const decodedToken = jwt.verify(token, secretKey) as JwtPayload;
+    return decodedToken;
+  } catch (error) {
+    return null; // Return null if token verification fails
+  }
 }

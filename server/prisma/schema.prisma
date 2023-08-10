@@ -43,3 +43,27 @@ model Match {
 
   @@map(name: "matches")
 }
+
+model Chat {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  matchedId  Int
+  message   ChatMessage[]  @relation("ChatToChatMessage")  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map(name: "chats")
+}
+
+model ChatMessage {
+  id        Int      @id @default(autoincrement())
+  message   String
+  senderId  Int
+  matchedId Int
+  chat      Chat     @relation("ChatToChatMessage", fields: [chatId], references: [id]) 
+  chatId    Int
+  createdAt DateTime @default(now())
+
+  @@map(name: "chat_messages")
+}
+

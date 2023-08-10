@@ -21,6 +21,10 @@ function Profile(props: { user: User; token: string }) {
     fetchUser();
   }, [props.token, userId, userProfile]);
 
+  const redirectChat = () => {
+    window.location.href = `/chats/${userId}`;
+  };
+
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-2xl text-center font-bold mb-3">Profile</h1>
@@ -32,6 +36,13 @@ function Profile(props: { user: User; token: string }) {
         />
         <p className="text-center">{userProfile?.name}</p>
         <p className="text-center">{userProfile?.description}</p>
+        <br />
+        <button
+          onClick={redirectChat}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Chat
+        </button>
       </div>
     </div>
   );

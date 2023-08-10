@@ -73,3 +73,37 @@ export async function getUserMatches(userId: number) {
     console.log(err);
   }
 }
+
+export async function getUserChats(id: string, token: string) {
+  const response = await fetch(`http://localhost:8080/api/chats/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function postUserChats(
+  id: number,
+  token: string,
+  userId: string,
+  message: string
+) {
+  await fetch(`http://localhost:8080/api/chats/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      userId: parseInt(userId),
+      matchedId: id,
+      message: message,
+    }),
+  });
+}

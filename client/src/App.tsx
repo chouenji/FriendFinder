@@ -8,6 +8,8 @@ import Cookies from 'js-cookie';
 import Matches from './pages/Matches';
 import Profile from './pages/Profile';
 import MyProfile from './pages/MyProfile';
+import Chats from './pages/Chats';
+import Chat from './pages/Chat';
 
 function App() {
   const token: string = Cookies.get('token') || '';
@@ -79,6 +81,7 @@ function App() {
               onClick={() => {
                 Cookies.remove('token');
                 setLoggedIn(false);
+                window.location.href = '/';
               }}
             >
               Logout
@@ -89,6 +92,9 @@ function App() {
             </Link>
             <Link to="/my_profile" className="mr-4 ml-4">
               My Profile
+            </Link>
+            <Link to="/chats" className="mr-4 ml-4">
+              Chats
             </Link>
           </div>
         )}
@@ -112,12 +118,14 @@ function App() {
         <Route path="/my_profile">
           <MyProfile user={user} token={token} />
         </Route>
+        <Route path="/chats">
+          <Chats user={user} token={token} />
+        </Route>
+        <Route path="/chats/:id">
+          <Chat user={user} token={token} />
+        </Route>
         <Route>
-          <div className="w-80 mx-auto">
-            <div className="flex justify-center">
-              <h1>404 - Not Found</h1>
-            </div>
-          </div>
+          <div className="text-center">Not found 404</div>
         </Route>
       </Switch>
     </div>
