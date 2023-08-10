@@ -28,4 +28,20 @@ declare global {
     createdAt?: Date;
     updatedAt?: Date;
   };
+
+  type Message = {
+    id: number;
+    message: string;
+    senderId: number;
+    createdAt: Date;
+  };
+
+  type Chat = {
+    id: number;
+    userId: number;
+    matchedId: number;
+    message: Message[];
+    createdAt?: Date;
+    updatedAt?: Date;
+  };
 }
