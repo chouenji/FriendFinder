@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 // Initialize a new Prisma client
 const prisma = new PrismaClient();
@@ -116,6 +116,13 @@ export async function postUserLikes(req: Request, res: Response) {
         data: {
           userId: Number(likedUserId),
           matchedId: Number(userId),
+        },
+      });
+
+      await prisma.chat.create({
+        data: {
+          userId: Number(userId),
+          matchedId: Number(likedUserId),
         },
       });
     }
