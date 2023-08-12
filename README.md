@@ -55,17 +55,24 @@ The current version of the Friend Finder application includes the following feat
 
 - User registration and authentication
 - Liking and matching with other users
+- Real-time chat
+- User Profile Customization Options
+
+![1](https://github.com/chouenji/FriendFinder/assets/28991125/7f83d3ba-3b96-4d16-b270-904799472c7b)
+![2](https://github.com/chouenji/FriendFinder/assets/28991125/054c1d69-53f8-4b06-9cf4-12eeae2a377b)
+![3](https://github.com/chouenji/FriendFinder/assets/28991125/82fe1237-711a-4fa7-befb-269d5e9c4a77)
+![4](https://github.com/chouenji/FriendFinder/assets/28991125/46e8249c-c1fb-4c85-994b-ba8855150de5)
+![5](https://github.com/chouenji/FriendFinder/assets/28991125/2afec53a-11f2-4d39-a449-e8d1ea921973)
+
+  
   
 ## Future Additions
 
 In the future, I plan to add the following exciting features:
 
 - Enhanced User Interface and Design
-- Real-time Chat System for matched users
 - Advanced Filters for searching and matching users based on preferences
-- User Profile Customization Options
 - Basic user search functionality
-
 
 ## Database Configuration
 
