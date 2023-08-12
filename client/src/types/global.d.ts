@@ -3,10 +3,11 @@ export {};
 declare global {
   type User = {
     id: number;
-    name?: string;
+    token: string;
+    name: string;
+    picture?: string;
     email?: string;
     password?: string;
-    picture?: string;
     description?: string;
     likes?: string;
     createdAt?: Date;
@@ -41,6 +42,7 @@ declare global {
     userId: number;
     matchedId: number;
     message: Message[];
+    picture: ?string;
     createdAt?: Date;
     updatedAt?: Date;
   };

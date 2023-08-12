@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { getUserById } from '../utils/utils';
 import { useRoute } from 'wouter';
 
-function Profile(props: { user: User; token: string }) {
+function Profile(props: { user: User }) {
   const [userProfile, setUserProfile] = useState<User>();
   const [, params] = useRoute('/profile/:id');
   const userId = params ? +params.id : 0;
 
   useEffect(() => {
     // If there is no token, return
-    if (!props.token) {
+    if (!props.user.token) {
       return;
     }
 
@@ -19,7 +19,7 @@ function Profile(props: { user: User; token: string }) {
     };
 
     fetchUser();
-  }, [props.token, userId, userProfile]);
+  }, [props.user.token, userId, userProfile]);
 
   const redirectChat = () => {
     window.location.href = `/chats/${userId}`;

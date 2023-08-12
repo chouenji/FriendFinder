@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useRoute } from 'wouter';
 import { postUserChats, getUserChats } from '../utils/utils';
 import io from 'socket.io-client';
+import { getUserById } from '../utils/utils';
 
-export default function Chat(props: { user: User; token: string }) {
+export default function Chat(props: { user: User }) {
   const [message, setMessage] = useState('');
-  const [match, params] = useRoute('/chats/:id');
+  const [, params] = useRoute('/chats/:id');
   const [messages, setMessages] = useState<Chat[]>([]);
+  const [userProfile, setUserProfile] = useState<User>();
+  const [matchedUserProfile, setMatchedUserProfile] = useState<User>();
 
   function formatTimestamp(timestamp: Date) {
     const date = new Date(timestamp);
@@ -17,7 +20,12 @@ export default function Chat(props: { user: User; token: string }) {
     try {
       if (!message) return; // If there is no message, don't send anything
 
-      await postUserChats(props.user.id, props.token, params!.id, message);
+      await postUserChats(
+        props.user.id,
+        props.user.token,
+        parseInt(params!.id),
+        message
+      );
 
       // Emit the message to the server with recipient's user ID (matchedId)
       const socket = io('http://localhost:3000');
@@ -26,7 +34,6 @@ export default function Chat(props: { user: User; token: string }) {
         matchedId: parseInt(params!.id),
         message: [
           {
-            id: messages.length + 1,
             senderId: props.user.id,
             message: message,
           },
@@ -40,18 +47,32 @@ export default function Chat(props: { user: User; token: string }) {
     }
   };
 
-  const getChat = async () => {
-    try {
-      const response = await getUserChats(params!.id, props.token);
-      const data = await response;
-      setMessages(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const getChat = async () => {
+      try {
+        const response = await getUserChats(params!.id, props.user.token);
+        const data = await response;
+
+        // If there are no messages, don't set the state
+        if (data.length === 0) {
+          return;
+        }
+
+        setMessages(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchUser = async () => {
+      const user: User = await getUserById(props.user.id);
+      const matchedUser: User = await getUserById(parseInt(params!.id));
+      setUserProfile(user);
+      setMatchedUserProfile(matchedUser);
+    };
+
     getChat();
+    fetchUser();
 
     const socket = io('http://localhost:3000');
 
@@ -67,7 +88,7 @@ export default function Chat(props: { user: User; token: string }) {
       const structuredMessage: Chat = {
         id: message.id,
         userId: message.userId,
-        matchedId: parseInt(message.matchedId),
+        matchedId: message.matchedId,
         message: message.message.map((msg: Chat) => ({
           id: msg.id,
           senderId: msg.userId,
@@ -99,38 +120,57 @@ export default function Chat(props: { user: User; token: string }) {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col flex-grow overflow-y-scroll">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex flex-col ${
-              message.userId === props.user.id ? 'items-end' : 'items-start'
-            }`}
-          >
-            <div className="flex flex-col">
-              <div className="flex flex-row">
-                <img
-                  className="w-10 h-10 rounded-full mr-2"
-                  src="https://picsum.photos/200/300"
-                  alt="Profile"
-                />
-                <div
-                  className={`p-2 rounded-lg ${
-                    message.userId === props.user.id
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-200 text-black'
-                  }`}
-                >
-                  {message.message[0].message}
+        {messages.length > 0 &&
+          messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex flex-col ${
+                message.userId === props.user.id ? 'items-end' : 'items-start'
+              }`}
+            >
+              <div className="flex flex-col">
+                <div className="flex flex-row">
+                  {message.userId !== props.user.id && (
+                    <img
+                      className="w-8 h-8 rounded-full"
+                      src={`data:image/png;base64, ${matchedUserProfile?.picture}`}
+                      alt={matchedUserProfile?.picture}
+                    />
+                  )}
+
+                  <div
+                    className={`${
+                      message.userId === props.user.id
+                        ? 'flex justify-end w-full'
+                        : ''
+                    }`}
+                  >
+                    <div
+                      className={`p-2 rounded-lg ${
+                        message.userId === props.user.id
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 text-black'
+                      }`}
+                    >
+                      {message?.message[0]?.message}
+                    </div>
+                    {message.userId === props.user.id && (
+                      <img
+                        className="w-8 h-8 rounded-full"
+                        src={`data:image/png;base64, ${userProfile?.picture}`}
+                        alt={userProfile?.picture}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-row">
-                <div className="text-xs text-gray-500">
-                  {formatTimestamp(message.createdAt as Date)}
+                <div className="flex flex-row">
+                  <div className="text-xs text-gray-500">
+                    {formatTimestamp(message.createdAt as Date)}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
         <div className="flex items-center justify-center p-4">
           <input
             className="border border-gray-400 w-full p-2"

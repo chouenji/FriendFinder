@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { getUsers, getUserMatches } from '../utils/utils';
-function Matches(props: { user: User; token: string }) {
+function Matches(props: { user: User }) {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     // If there is no token, return
-    if (!props.token) {
+    if (!props.user.token) {
       return;
     }
 
@@ -31,14 +31,14 @@ function Matches(props: { user: User; token: string }) {
     };
 
     displayUsers();
-  }, [props.token, props.user.id]);
+  }, [props.user.token, props.user.id]);
 
   return (
     <div>
-      {props.token && (
+      {props.user.token && (
         <>
           <h1 className="text-2xl text-center font-bold mb-3">Your Matches</h1>
-          <div className="flex flex-wrap">
+          <div className="flex justify-center flex-wrap">
             {users.map((user: User) => {
               return (
                 <div
@@ -66,7 +66,7 @@ function Matches(props: { user: User; token: string }) {
         </>
       )}
 
-      {!props.token && (
+      {!props.user.token && (
         <>
           <h1 className="text-center">Please log in to see your matches!</h1>
         </>
