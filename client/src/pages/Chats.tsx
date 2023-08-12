@@ -1,42 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { getUserById, getUserMatches } from '../utils/utils';
+import { useLocation } from 'wouter';
 
-export default function Chats(props: { user: User; token: string }) {
-  const [chat, setChat] = useState<Chat[]>([]);
+export default function Chats(props: { user: User }) {
+  const [matchedUser, setMatchedUser] = useState<any>({});
 
   useEffect(() => {
-    const getChats = async () => {
+    const getChatsAndUserInfo = async () => {
       try {
-        const chats = await fetch('http://localhost:8080/chats', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'GET',
-        });
+        const chats: Chat[] = await getUserMatches(props.user.id);
 
-        const chatsJson = await chats.json();
+        const uniqueMatchedUserIds = Array.from(
+          new Set(chats.map((chat) => chat.matchedId))
+        );
 
-        console.log(chatsJson);
+        const matchedUsersPromises = uniqueMatchedUserIds.map(
+          async (matchedId: number) => {
+            const matchedUser = await getUserById(matchedId);
+            return {
+              id: matchedUser.id,
+              name: matchedUser.name,
+              picture: matchedUser.picture,
+            };
+          }
+        );
 
-        const getUserChats = chatsJson.filter((chat: Chat) => {
-          return chat.userId === props.user.id;
-        });
-
-        setChat(getUserChats);
-      } catch (error) {
-        console.log(error);
+        const matchedUsersPictures = await Promise.all(matchedUsersPromises);
+        setMatchedUser(matchedUsersPictures);
+      } catch (err) {
+        console.log(err);
       }
     };
 
-    getChats();
+    getChatsAndUserInfo();
   }, []);
+
+  const [, navigate] = useLocation(); // Destructuring to get navigate
+
+  const redirectToChat = (matchedId: number) => {
+    navigate(`/chats/${matchedId}`);
+  };
 
   return (
     <div className="text-center">
       <h1>Chats</h1>
-      <div className="flex flex-col">
-        {chat.map((chat) => {
-          return <div className="flex flex-col" key={chat.id}></div>;
-        })}
+      <br />
+      <div className="flex justify-around">
+        {matchedUser.length > 0 &&
+          matchedUser.map((user: User, index: number) => {
+            return (
+              <div key={index}>
+                <img
+                  className="w-40 h-40 rounded-full"
+                  src={`data:image/png;base64,${user.picture}`}
+                  alt={user.name}
+                />
+                <p>{user.name}</p>
+                <br />
+                <button
+                  onClick={() => redirectToChat(user.id)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-4 rounded"
+                >
+                  Chat
+                </button>
+              </div>
+            );
+          })}
+        {matchedUser.length === 0 && <h1>You have no chats at the moment!</h1>}
       </div>
     </div>
   );

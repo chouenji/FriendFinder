@@ -1,6 +1,6 @@
 import './App.css';
-import { useEffect, useState } from 'react';
-import { Link, Route, Switch } from 'wouter';
+import { useEffect } from 'react';
+import { Route, Switch } from 'wouter';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -10,24 +10,26 @@ import Profile from './pages/Profile';
 import MyProfile from './pages/MyProfile';
 import Chats from './pages/Chats';
 import Chat from './pages/Chat';
+import Navbar from './components/Navbar';
 
 function App() {
   const token: string = Cookies.get('token') || '';
   let user: User = {
     id: -1,
     name: '',
+    token: token || '',
   };
-  const [loggedIn, setLoggedIn] = useState(false);
 
-  // If there is a token, decode it and get the user's id and name
-  if (token) {
+  // If there is a token, decode it and get the user's id, name, and picture
+  if (user.token) {
     const [, payloadBase64] = token.split('.');
     const decodedPayload = atob(payloadBase64);
     const parsedToken = JSON.parse(decodedPayload);
 
     user = {
       id: parseInt(parsedToken.userId),
-      name: parsedToken.name || '',
+      name: parsedToken.name,
+      token: token,
     };
   }
 
@@ -44,9 +46,6 @@ function App() {
         if (response.status === 401) {
           Cookies.remove('token');
           window.location.reload();
-          setLoggedIn(false);
-        } else {
-          setLoggedIn(true);
         }
       } catch (err) {
         console.log(err);
@@ -56,73 +55,35 @@ function App() {
     if (token) {
       verifyToken();
     }
-  }, [token, loggedIn]);
+  }, [token]);
 
   return (
     <div className="App">
-      <nav className="flex justify-center">
-        <Link to="/" className="mr-4">
-          Home
-        </Link>
-        {!token && (
-          <>
-            <Link to="/register" className="mr-4">
-              Register
-            </Link>
-            <Link to="/login" className="mr-4">
-              Login
-            </Link>
-          </>
-        )}
-        {token && (
-          <div className="flex justify-center">
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4"
-              onClick={() => {
-                Cookies.remove('token');
-                setLoggedIn(false);
-                window.location.href = '/';
-              }}
-            >
-              Logout
-            </button>
-            <h1>Hello {user.name}!</h1>
-            <Link to="/matches" className="ml-4 mr-4">
-              My Matches
-            </Link>
-            <Link to="/my_profile" className="mr-4 ml-4">
-              My Profile
-            </Link>
-            <Link to="/chats" className="mr-4 ml-4">
-              Chats
-            </Link>
-          </div>
-        )}
-      </nav>
+      <Navbar user={user} />
       <Switch>
         <Route path="/">
-          <Home user={user} token={token} />
+          <Home user={user} />
         </Route>
         <Route path="/register">
-          <Register token={token} />
+          <Register user={user} />
         </Route>
         <Route path="/login">
-          <Login token={token} />
+          <Login user={user} />
         </Route>
         <Route path="/matches">
-          <Matches user={user} token={token} />
+          <Matches user={user} />
         </Route>
         <Route path="/profile/:id">
-          <Profile user={user} token={token} />
+          <Profile user={user} />
         </Route>
         <Route path="/my_profile">
-          <MyProfile user={user} token={token} />
+          <MyProfile user={user} />
         </Route>
         <Route path="/chats">
-          <Chats user={user} token={token} />
+          <Chats user={user} />
         </Route>
         <Route path="/chats/:id">
-          <Chat user={user} token={token} />
+          <Chat user={user} />
         </Route>
         <Route>
           <div className="text-center">Not found 404</div>

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { getUserById } from '../utils/utils';
 
-function MyProfile(props: { user: User; token: string }) {
+function MyProfile(props: { user: User }) {
   const [userProfile, setUserProfile] = useState<User>();
   const [description, setDescription] = useState<string | undefined>();
 
   useEffect(() => {
     // If there is no token, return
-    if (!props.token) {
+    if (!props.user.token) {
       return;
     }
 
@@ -17,7 +17,7 @@ function MyProfile(props: { user: User; token: string }) {
     };
 
     fetchUser();
-  }, [props.token, props.user.id]);
+  }, [props.user.token, props.user.id]);
 
   const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -29,7 +29,7 @@ function MyProfile(props: { user: User; token: string }) {
     event.preventDefault();
 
     try {
-      const response = await fetch(
+      await fetch(
         `http://localhost:8080/api/users/${props.user.id}/description`,
         {
           method: 'PUT',

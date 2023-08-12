@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 
-function Login(props: { token: string }) {
+function Login(props: { user: User }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submit, setSubmit] = useState(false);
@@ -57,7 +57,7 @@ function Login(props: { token: string }) {
     setPassword(e.target.value);
   };
 
-  if (props.token) {
+  if (props.user.token) {
     return (
       <div className="w-80 mx-auto">
         <div className="flex justify-center">

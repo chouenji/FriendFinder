@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { getUsers, getUserLikes } from '../utils/utils';
 
-function Home(props: { user: User; token: string }) {
+function Home(props: { user: User }) {
   const [users, setUsers] = useState<User[]>([]);
   const [friendChoices, setFriendChoices] = useState<User[]>([]);
 
   useEffect(() => {
     // If there is no token, return
-    if (!props.token) {
+    if (!props.user.token) {
       return;
     }
 
@@ -17,11 +17,11 @@ function Home(props: { user: User; token: string }) {
     };
 
     fetchUsers();
-  }, [props.token]);
+  }, [props.user.token]);
 
   useEffect(() => {
     // If there is no token, return
-    if (!props.token) {
+    if (!props.user.token) {
       return;
     }
 
@@ -50,7 +50,7 @@ function Home(props: { user: User; token: string }) {
     };
 
     displayUsers();
-  }, [props.token, props.user.id, users]);
+  }, [props.user.token, props.user.id, users]);
 
   const likeUser = async (likedUserId: number) => {
     try {
@@ -73,9 +73,15 @@ function Home(props: { user: User; token: string }) {
 
   return (
     <div className="w-full">
-      {props.token && (
+      {props.user.token && (
         <>
-          <h1 className="text-center">These are your possible matches!</h1>
+          {friendChoices.length > 0 ? (
+            <h1 className="text-center">Users</h1>
+          ) : (
+            <h1 className="text-center">
+              You already liked all users at the moment!
+            </h1>
+          )}
           <br />
           <div className="flex flex-col sm:flex-row sm:justify-around">
             {friendChoices.length > 0 &&
@@ -106,7 +112,7 @@ function Home(props: { user: User; token: string }) {
         </>
       )}
 
-      {!props.token && (
+      {!props.user.token && (
         <div className="flex justify-center">
           <h1>Welcome to Friend Finder!</h1>
         </div>

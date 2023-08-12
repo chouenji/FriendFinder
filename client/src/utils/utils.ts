@@ -89,20 +89,20 @@ export async function getUserChats(id: string, token: string) {
 }
 
 export async function postUserChats(
-  id: number,
+  userId: number,
   token: string,
-  userId: string,
+  matchedId: number,
   message: string
 ) {
-  await fetch(`http://localhost:8080/api/chats/${id}`, {
+  await fetch(`http://localhost:8080/api/chats/${matchedId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      userId: parseInt(userId),
-      matchedId: id,
+      userId: userId,
+      matchedId: matchedId,
       message: message,
     }),
   });

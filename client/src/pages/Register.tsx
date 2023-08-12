@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Register(props: { token: string }) {
+function Register(props: { user: User }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [picture, setPicture] = useState<File | null>(null);
@@ -79,7 +79,7 @@ function Register(props: { token: string }) {
     setConfirmPassword(e.target.value);
   };
 
-  if (props.token) {
+  if (props.user.token) {
     return (
       <div className="w-80 mx-auto">
         <div className="flex justify-center">
