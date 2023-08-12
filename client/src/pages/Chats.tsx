@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getUserById, getUserMatches } from '../utils/utils';
 import { useLocation } from 'wouter';
 
 export default function Chats(props: { user: User }) {
-  const [chats, setChats] = useState<Chat[]>([]);
   const [matchedUser, setMatchedUser] = useState<any>({});
 
   useEffect(() => {
     const getChatsAndUserInfo = async () => {
       try {
         const chats: Chat[] = await getUserMatches(props.user.id);
-        console.log(chats);
 
         const uniqueMatchedUserIds = Array.from(
           new Set(chats.map((chat) => chat.matchedId))

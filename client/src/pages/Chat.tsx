@@ -18,7 +18,7 @@ export default function Chat(props: { user: User }) {
 
   const sendMessage = async () => {
     try {
-      if (!message) return; // If there is no message, don't send anything
+      if (!message.trim) return; // If there is no message, don't send anything
 
       await postUserChats(
         props.user.id,
@@ -53,9 +53,8 @@ export default function Chat(props: { user: User }) {
         const response = await getUserChats(params!.id, props.user.token);
         const data = await response;
 
-        // If there are no messages, don't set the state
         if (data.length === 0) {
-          return;
+          return; // If there are no messages, don't set the state
         }
 
         setMessages(data);
@@ -117,13 +116,14 @@ export default function Chat(props: { user: User }) {
     setMessage(event.target.value);
   };
 
+  console.log(messages);
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col flex-grow overflow-y-scroll">
         {messages.length > 0 &&
-          messages.map((message) => (
+          messages.map((message, index) => (
             <div
-              key={message.id}
+              key={index}
               className={`flex flex-col ${
                 message.userId === props.user.id ? 'items-end' : 'items-start'
               }`}
@@ -152,7 +152,9 @@ export default function Chat(props: { user: User }) {
                           : 'bg-gray-200 text-black'
                       }`}
                     >
-                      {message?.message[0]?.message}
+                      {message.message.map((msg, index) => (
+                        <div key={index}>{msg.message}</div>
+                      ))}
                     </div>
                     {message.userId === props.user.id && (
                       <img

@@ -42,7 +42,7 @@ declare global {
     userId: number;
     matchedId: number;
     message: Message[];
-    picture: ?string;
+    picture?: string;
     createdAt?: Date;
     updatedAt?: Date;
   };
