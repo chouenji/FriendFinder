@@ -62,7 +62,8 @@ The current version of the Friend Finder application includes the following feat
 ![2](https://github.com/chouenji/FriendFinder/assets/28991125/054c1d69-53f8-4b06-9cf4-12eeae2a377b)
 ![3](https://github.com/chouenji/FriendFinder/assets/28991125/82fe1237-711a-4fa7-befb-269d5e9c4a77)
 ![4](https://github.com/chouenji/FriendFinder/assets/28991125/46e8249c-c1fb-4c85-994b-ba8855150de5)
-![5](https://github.com/chouenji/FriendFinder/assets/28991125/2afec53a-11f2-4d39-a449-e8d1ea921973)
+![5](https://github.com/chouenji/FriendFinder/assets/28991125/90eb13ef-a183-4e51-bb10-a79c8455dc8c)
+
 
   
   
