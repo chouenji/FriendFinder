@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <img src="link-to-your-logo.png" alt="Friend Finder Logo">
+  <img width=200px src="https://github.com/chouenji/FriendFinder/assets/28991125/36587e68-b5db-41b2-9460-3533dbfb11fa" alt="Friend Finder Logo">
 </p>
 
 <p align="center">
