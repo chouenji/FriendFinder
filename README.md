@@ -14,6 +14,7 @@
 <p align="center">
   <a href="#introduction">Introduction</a> •
   <a href="#project-overview">Project Overview</a> •
+   <a href="#technologies">Technologies</a> •
   <a href="#installation">Installation</a> •
   <a href="#running-the-project">Running the Project</a> •
   <a href="#features">Features</a> •
@@ -31,6 +32,24 @@ Welcome to the Friend Finder project! This repository contains the source code f
 ## Project Overview
 
 The Friend Finder project aims to create a user-friendly and efficient platform for making new connections and building meaningful friendships. Users can view other profiles, like or dislike them, and get matched with users who have reciprocated interest.
+
+## Technologies
+
+The Friend Finder project utilizes the following technologies:
+
+- [React](https://reactjs.org/) - A JavaScript library for building user interfaces
+- [Typescript](https://www.typescriptlang.org/) - A superset of JavaScript that adds static types
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [Jest](https://jestjs.io/) - A JavaScript testing framework
+- [Passport](http://www.passportjs.org/) - An authentication middleware for Node.js
+- [Passport JWT](http://www.passportjs.org/packages/passport-jwt/) - A Passport strategy for authenticating with JSON Web Tokens
+- [Node.js](https://nodejs.org/) - A runtime environment for executing JavaScript code on the server
+- [Express](https://expressjs.com/) - A minimal and flexible Node.js web application framework
+- PostgreSQL - A powerful, open-source relational database system
+- [Prisma](https://www.prisma.io/) - A modern database toolkit for Node.js and TypeScript
+
+These technologies have been combined to create a feature-rich and dynamic application that enables users to connect and find friends based on their interests and preferences. Passport JWT is used for implementing secure authentication using JSON Web Tokens, adding an additional layer of security to the application.
+
 
 ## Installation
 
